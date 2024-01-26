@@ -5,8 +5,10 @@ import {
   Box,
   Typography,
   CircularProgress,
+  Link,
 } from "@mui/material";
 import { useAuth } from "@shared/authentication/useAuth";
+import { loginValidationSchema } from "./validationSchema";
 
 const Login = () => {
   const { handleLogin, loadingAuth } = useAuth();
@@ -18,16 +20,22 @@ const Login = () => {
 
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+      }}
     >
       <Typography variant="h4" sx={{ mb: 2 }}>
         Login
       </Typography>
       <Formik
         initialValues={{ username: "", password: "" }}
+        validationSchema={loginValidationSchema}
         onSubmit={submitLogin}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors, touched }) => (
           <Form>
             <Field
               as={TextField}
@@ -36,6 +44,8 @@ const Login = () => {
               variant="outlined"
               fullWidth
               margin="normal"
+              error={touched.username && Boolean(errors.username)}
+              helperText={touched.username && errors.username}
             />
             <Field
               as={TextField}
@@ -45,6 +55,8 @@ const Login = () => {
               variant="outlined"
               fullWidth
               margin="normal"
+              error={touched.password && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
             />
             <Button
               type="submit"
@@ -55,6 +67,14 @@ const Login = () => {
             >
               {loadingAuth ? <CircularProgress size={24} /> : "Login"}
             </Button>
+            <Box sx={{ mt: 2, textAlign: "center" }}>
+              <Link href="#" variant="body2" sx={{ mr: 2 }}>
+                Forgot Password?
+              </Link>
+              <Link href="#" variant="body2">
+                Sign Up
+              </Link>
+            </Box>
           </Form>
         )}
       </Formik>
