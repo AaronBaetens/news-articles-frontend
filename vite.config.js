@@ -11,6 +11,7 @@ export default defineConfig({
       ),
       "@shared": fileURLToPath(new URL("./src/shared/", import.meta.url)),
       "@pages": fileURLToPath(new URL("./src/pages/", import.meta.url)),
+      "@api": fileURLToPath(new URL("./src/api/", import.meta.url)),
     },
   },
 });
