@@ -6,17 +6,13 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-import PropTypes from "prop-types";
-import useLogin from "./useLogin";
+import { useAuth } from "@shared/authentication/useAuth";
 
-const Login = ({ onLogin }) => {
-  const { handleLogin, loading } = useLogin();
+const Login = () => {
+  const { handleLogin, loadingAuth } = useAuth();
 
   const submitLogin = async (values, { setSubmitting }) => {
-    const isAuth = await handleLogin(values.username, values.password);
-    if (isAuth) {
-      onLogin(true);
-    }
+    await handleLogin(values.username, values.password);
     setSubmitting(false);
   };
 
@@ -54,20 +50,16 @@ const Login = ({ onLogin }) => {
               type="submit"
               variant="contained"
               color="primary"
-              disabled={isSubmitting || loading}
+              disabled={isSubmitting || loadingAuth}
               fullWidth
             >
-              {loading ? <CircularProgress size={24} /> : "Login"}
+              {loadingAuth ? <CircularProgress size={24} /> : "Login"}
             </Button>
           </Form>
         )}
       </Formik>
     </Box>
   );
-};
-
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
 };
 
 export default Login;
