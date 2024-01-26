@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ onLogout, loadingAuth }) => {
   return (
@@ -14,10 +15,10 @@ const Navbar = ({ onLogout, loadingAuth }) => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           News Dashboard
         </Typography>
-        <Button color="inherit" href="#home">
+        <Button color="inherit" component={Link} to="/">
           Home
         </Button>
-        <Button color="inherit" href="#favorites">
+        <Button color="inherit" component={Link} to="/favorites">
           Favorites
         </Button>
         <Button color="inherit" onClick={onLogout} disabled={loadingAuth}>
