@@ -1,26 +1,26 @@
 import { CircularProgress, List, Typography } from "@mui/material";
-import useArticlesList from "./useArticlesList";
-import Article from "@components/Article";
+import useHeadlinesList from "./useHeadlinesList";
+import Article from "@components/Headline";
 import Navbar from "@components/Navbar/Navbar";
 import { useAuth } from "@shared/authentication/useAuth";
 
-const ArticlesList = () => {
-  const { articles, articlesLoading, error } = useArticlesList();
+const HeadlinesList = () => {
+  const { headlines, headlinesLoading, error } = useHeadlinesList();
   const { handleLogout, loadingAuth } = useAuth();
 
-  if (articlesLoading) return <CircularProgress />;
+  if (headlinesLoading) return <CircularProgress />;
   if (error) return <Typography color="error">{error.message}</Typography>;
 
   return (
     <>
       <Navbar onLogout={handleLogout} loadingAuth={loadingAuth} />
       <List>
-        {articles.map((article) => (
-          <Article key={article.id} article={article} />
+        {headlines.map((headline) => (
+          <Article key={headline.id} headline={headline} />
         ))}
       </List>
     </>
   );
 };
 
-export default ArticlesList;
+export default HeadlinesList;
