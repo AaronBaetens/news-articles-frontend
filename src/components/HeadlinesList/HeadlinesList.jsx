@@ -1,21 +1,43 @@
-import { CircularProgress, List, Typography } from "@mui/material";
+import { Box, CircularProgress, List, Typography } from "@mui/material";
 import useHeadlinesList from "./useHeadlinesList";
-import Article from "@components/Headline";
+import { useEffect } from "react";
+import Headline from "@components/Headline";
 
 const HeadlinesList = () => {
-  const { headlines, headlinesLoading, error } = useHeadlinesList();
+  const { headlines, headlinesLoading, error, fetchMoreHeadlines } =
+    useHeadlinesList();
 
-  if (headlinesLoading) return <CircularProgress />;
-  if (error) return <Typography color="error">{error.message}</Typography>;
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight
+      )
+        return;
+      fetchMoreHeadlines();
+    };
 
-  return (
-    <>
-      <List>
-        {headlines.map((headline) => (
-          <Article key={headline.id} headline={headline} />
-        ))}
-      </List>
-    </>
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [fetchMoreHeadlines]);
+
+  return headlinesLoading && headlines.length === 0 ? (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+    >
+      <CircularProgress />
+    </Box>
+  ) : error ? (
+    <Typography color="error">{error.message}</Typography>
+  ) : (
+    <List>
+      {headlines.map((headline) => (
+        <Headline key={headline.id} headline={headline} />
+      ))}
+    </List>
   );
 };
 
