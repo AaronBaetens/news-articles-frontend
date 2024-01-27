@@ -3,14 +3,16 @@ import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getFavorites, toggleFavorite } from "@shared/helpers/favorites.helper";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import DialogComponent from "@components/DialogComponent";
 
 const FavoritesList = () => {
   const [favorites, setFavorites] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [articleToDelete, setArticleToDelete] = useState(null);
 
-  const handleRemoveFavorite = (article) => {
-    toggleFavorite(article);
+  useEffect(() => {
     setFavorites(getFavorites());
-  };
+  }, []);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
@@ -23,54 +25,70 @@ const FavoritesList = () => {
     localStorage.setItem("favorites", JSON.stringify(items));
   };
 
-  useEffect(() => {
-    setFavorites(getFavorites());
-  }, []);
+  const openDeleteDialog = (article) => {
+    setArticleToDelete(article);
+    setDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const confirmDelete = () => {
+    if (articleToDelete) {
+      toggleFavorite(articleToDelete);
+      setFavorites(getFavorites());
+    }
+    closeDialog();
+  };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="ROOT" type="group">
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            <List>
+    <>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="favoritesDroppable" type="FAVORITES">
+          {(provided) => (
+            <List {...provided.droppableProps} ref={provided.innerRef}>
               {favorites.map((article, index) => (
                 <Draggable
-                  draggableId={article.id.toString()}
                   key={article.id}
+                  draggableId={article.id.toString()}
                   index={index}
                 >
                   {(provided) => (
-                    <div
-                      {...provided.draggableProps}
+                    <ListItem
                       ref={provided.innerRef}
+                      {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      secondaryAction={
+                        <IconButton
+                          edge="end"
+                          onClick={() => openDeleteDialog(article)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      }
                     >
-                      <ListItem
-                        secondaryAction={
-                          <IconButton
-                            edge="end"
-                            onClick={() => handleRemoveFavorite(article)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        }
-                      >
-                        <ListItemText
-                          primary={article.title}
-                          secondary={article.description}
-                        />
-                      </ListItem>
-                    </div>
+                      <ListItemText
+                        primary={article.title}
+                        secondary={article.description}
+                      />
+                    </ListItem>
                   )}
                 </Draggable>
               ))}
+              {provided.placeholder}
             </List>
-            {provided.placeholder}{" "}
-            {/* This line is necessary to avoid the warning */}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <DialogComponent
+        open={dialogOpen}
+        handleClose={closeDialog}
+        title="Confirm Deletion"
+        content="Are you sure you want to remove this article from your favorites?"
+        onConfirm={confirmDelete}
+      />
+    </>
   );
 };
 
