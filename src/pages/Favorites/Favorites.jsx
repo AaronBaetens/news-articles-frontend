@@ -1,5 +1,7 @@
+import FavoritesList from "@components/FavoritesList";
+
 function Favorites() {
-  return <div>Favorites</div>;
+  return <FavoritesList />;
 }
 
 export default Favorites;

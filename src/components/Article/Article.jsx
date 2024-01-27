@@ -10,7 +10,7 @@ const Article = ({ article }) => {
   const { id, title, description } = article;
 
   const handleToggleFavorite = () => {
-    toggleFavorite(id);
+    toggleFavorite(article);
     setFavorite(isFavorite(id));
   };
 
