@@ -1,32 +1,32 @@
 import { Box, CircularProgress, List, Typography } from "@mui/material";
-import useHeadlinesList from "./useHeadlinesList";
+import useArticlesList from "./useArticlesList";
 import { useEffect } from "react";
-import Headline from "@components/Headline";
+import Article from "@components/Article";
 
-const HeadlinesList = () => {
+const ArticleList = () => {
   const {
-    headlines,
-    headlinesLoading,
+    articles,
+    articlesLoading,
     error,
-    fetchMoreHeadlines,
+    fetchMoreArticles,
     preparingForLiveUpdate,
-  } = useHeadlinesList();
+  } = useArticlesList();
 
   useEffect(() => {
     const handleScroll = () => {
-      const threshold = 300; // Distance from the bottom to start fetching more headlines
+      const threshold = 300; // Distance from the bottom to start fetching more articles
       const currentPosition = window.innerHeight + window.scrollY; // Current scroll position
       const nearBottom =
         document.body.offsetHeight - currentPosition < threshold;
 
-      if (nearBottom && !headlinesLoading) {
-        fetchMoreHeadlines();
+      if (nearBottom && !articlesLoading) {
+        fetchMoreArticles();
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [fetchMoreHeadlines, headlinesLoading]);
+  }, [fetchMoreArticles, articlesLoading]);
 
   return (
     <>
@@ -37,7 +37,7 @@ const HeadlinesList = () => {
           </Typography>
         </Box>
       )}
-      {headlinesLoading && headlines.length === 0 ? (
+      {articlesLoading && articles.length === 0 ? (
         <Box
           display="flex"
           justifyContent="center"
@@ -50,8 +50,8 @@ const HeadlinesList = () => {
         <Typography color="error">{error.message}</Typography>
       ) : (
         <List>
-          {headlines.map((headline) => (
-            <Headline key={headline.id} headline={headline} />
+          {articles.map((article) => (
+            <Article key={article.id} article={article} />
           ))}
         </List>
       )}
@@ -59,4 +59,4 @@ const HeadlinesList = () => {
   );
 };
 
-export default HeadlinesList;
+export default ArticleList;

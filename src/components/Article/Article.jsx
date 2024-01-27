@@ -5,9 +5,9 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import { toggleFavorite, isFavorite } from "@shared/helpers/favorites.helper";
 
-const Headline = ({ headline }) => {
+const Article = ({ article }) => {
   const [favorite, setFavorite] = useState(false);
-  const { id, title, description } = headline;
+  const { id, title, description } = article;
 
   const handleToggleFavorite = () => {
     toggleFavorite(id);
@@ -28,12 +28,12 @@ const Headline = ({ headline }) => {
   );
 };
 
-Headline.propTypes = {
-  headline: PropTypes.shape({
+Article.propTypes = {
+  article: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
 };
 
-export default Headline;
+export default Article;

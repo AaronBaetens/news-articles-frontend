@@ -3,7 +3,7 @@
 //   NEWS_ARTICLES_API_KEY,
 // } from "@shared/constants";
 
-export const fetchHeadlines = async () => {
+export const fetchArticles = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1500));
 
   // const response = await fetch(

@@ -1,4 +1,4 @@
-import HeadlinesList from "@components/HeadlinesList";
+import ArticleList from "@components/ArticleList";
 import Navbar from "@components/Navbar";
 import { useAuth } from "@shared/authentication/useAuth";
 
@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <>
       <Navbar onLogout={handleLogout} loadingAuth={loadingAuth} />
-      <HeadlinesList />
+      <ArticleList />
     </>
   );
 };
