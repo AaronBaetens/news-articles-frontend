@@ -1,57 +1,76 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { List, ListItem, ListItemText, IconButton } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getFavorites, toggleFavorite } from "@shared/helpers/favorites.helper";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const FavoritesList = () => {
-  // State to hold the list of favorite articles
   const [favorites, setFavorites] = useState([]);
 
-  // Fetch favorites from localStorage on component mount and whenever the list changes
+  const handleRemoveFavorite = (article) => {
+    toggleFavorite(article);
+    setFavorites(getFavorites());
+  };
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(favorites);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setFavorites(items);
+    localStorage.setItem("favorites", JSON.stringify(items));
+  };
+
   useEffect(() => {
     setFavorites(getFavorites());
   }, []);
 
-  const handleRemoveFavorite = (article) => {
-    toggleFavorite(article); // Removes the article from favorites
-    setFavorites(getFavorites()); // Re-fetch favorites to update the state and UI
-  };
-
-  // Placeholder for the edit functionality
-  const handleEditFavorite = (article) => {
-    // Open edit modal or inline form
-  };
-
   return (
-    <List>
-      {favorites.map((article) => (
-        <ListItem
-          key={article.id}
-          secondaryAction={
-            <>
-              <IconButton
-                edge="end"
-                onClick={() => handleEditFavorite(article)}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                edge="end"
-                onClick={() => handleRemoveFavorite(article)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </>
-          }
-        >
-          <ListItemText
-            primary={article.title}
-            secondary={article.description}
-          />
-        </ListItem>
-      ))}
-    </List>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Droppable droppableId="ROOT" type="group">
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            <List>
+              {favorites.map((article, index) => (
+                <Draggable
+                  draggableId={article.id.toString()}
+                  key={article.id}
+                  index={index}
+                >
+                  {(provided) => (
+                    <div
+                      {...provided.draggableProps}
+                      ref={provided.innerRef}
+                      {...provided.dragHandleProps}
+                    >
+                      <ListItem
+                        secondaryAction={
+                          <IconButton
+                            edge="end"
+                            onClick={() => handleRemoveFavorite(article)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        }
+                      >
+                        <ListItemText
+                          primary={article.title}
+                          secondary={article.description}
+                        />
+                      </ListItem>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+            </List>
+            {provided.placeholder}{" "}
+            {/* This line is necessary to avoid the warning */}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 
