@@ -21,13 +21,13 @@ export const getFavorites = () => {
   return JSON.parse(localStorage.getItem("favorites")) || [];
 };
 
-// // Optional: Function to update a favorite's details
-// export const updateFavorite = (updatedArticle) => {
-//   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-//   const index = favorites.findIndex((fav) => fav.id === updatedArticle.id);
+// Optional: Function to update a favorite's details
+export const updateFavorite = (updatedArticle) => {
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const index = favorites.findIndex((fav) => fav.id === updatedArticle.id);
 
-//   if (index !== -1) {
-//     favorites[index] = updatedArticle; // Update the article details
-//     localStorage.setItem("favorites", JSON.stringify(favorites));
-//   }
-// };
+  if (index !== -1) {
+    favorites[index] = updatedArticle; // Update the article details
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }
+};
