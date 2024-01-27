@@ -2,8 +2,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import { AuthProvider } from "@shared/authentication/AuthContext";
 import { useAuth } from "@shared/authentication/useAuth";
-import Dashboard from "@pages/Dashboard";
+import Dashboard from "@pages/Home";
 import Favorites from "@pages/Favorites";
+import Navbar from "@components/Navbar";
 
 const App = () => {
   return (
@@ -16,15 +17,18 @@ const App = () => {
 export default App;
 
 const AppContent = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, handleLogout, loadingAuth } = useAuth();
 
   return (
     <Router>
       {isAuthenticated ? (
-        <Routes>
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/" element={<Dashboard />} />
-        </Routes>
+        <>
+          <Navbar onLogout={handleLogout} loadingAuth={loadingAuth} />
+          <Routes>
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/" element={<Dashboard />} />
+          </Routes>
+        </>
       ) : (
         <Login />
       )}
