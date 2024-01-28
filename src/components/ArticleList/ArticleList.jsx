@@ -51,14 +51,13 @@ const ArticleList = () => {
         </Box>
       )}
       {articlesLoading && articles.length === 0 ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100vh"
-        >
-          <CircularProgress />
-        </Box>
+        <Grid container spacing={4}>
+          {Array.from(new Array(8)).map((_, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <Article loading />
+            </Grid>
+          ))}
+        </Grid>
       ) : error ? (
         <Typography color="error">{error.message}</Typography>
       ) : (

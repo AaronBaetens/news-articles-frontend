@@ -9,18 +9,40 @@ import {
   IconButton,
   Tooltip,
   Typography,
-  Box,
+  Skeleton,
 } from "@mui/material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import { toggleFavorite, isFavorite } from "@shared/helpers/favorites.helper";
 
-const Article = ({ article }) => {
+const Article = ({ article, loading }) => {
   const [favorite, setFavorite] = useState(false);
-  const { id, title, description, urlToImage, url } = article;
+  const { id, title, description, urlToImage, url } = article ?? {};
+
+  useEffect(() => {
+    if (id) {
+      setFavorite(isFavorite(id));
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <Skeleton variant="rectangular" width="100%" height={140} />
+        <CardContent sx={{ flexGrow: 1, height: "350px" }}>
+          <Skeleton width="80%" />
+          <Skeleton width="60%" />
+          <Skeleton width="40%" />
+        </CardContent>
+        <CardActions sx={{ justifyContent: "flex-end", mt: "auto" }}>
+          <Skeleton width="20%" height={34} />
+        </CardActions>
+      </Card>
+    );
+  }
 
   const handleToggleFavorite = (event) => {
-    event.stopPropagation(); // Prevent the card click event
+    event.stopPropagation();
     toggleFavorite(article);
     setFavorite(isFavorite(id));
   };
@@ -28,10 +50,6 @@ const Article = ({ article }) => {
   const onCardClick = () => {
     window.open(url, "_blank");
   };
-
-  useEffect(() => {
-    setFavorite(isFavorite(id));
-  }, [id]);
 
   return (
     <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -44,7 +62,7 @@ const Article = ({ article }) => {
             alt={title}
           />
         )}
-        <CardContent sx={{ flexGrow: 1 }}>
+        <CardContent sx={{ flexGrow: 1, height: "350px" }}>
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
@@ -75,6 +93,7 @@ Article.propTypes = {
     urlToImage: PropTypes.string,
     url: PropTypes.string.isRequired,
   }).isRequired,
+  loading: PropTypes.bool,
 };
 
 export default Article;
