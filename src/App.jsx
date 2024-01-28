@@ -5,12 +5,16 @@ import { useAuth } from "@shared/authentication/useAuth";
 import Dashboard from "@pages/Home";
 import Favorites from "@pages/Favorites";
 import Navbar from "@components/Navbar";
+import { ThemeProvider } from "@mui/material";
+import theme from "@shared/theme/theme";
 
 const App = () => {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 
