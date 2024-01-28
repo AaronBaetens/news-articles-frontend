@@ -1,6 +1,5 @@
 import {
   Box,
-  CircularProgress,
   Container,
   Grid,
   LinearProgress,
