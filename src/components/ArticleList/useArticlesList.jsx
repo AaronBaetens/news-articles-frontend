@@ -15,12 +15,12 @@ const useArticlesList = () => {
       ...article,
       id: getArticleId(article),
     }));
-    // const filteredArticles = articlesWithId.filter(
-    //   (article) => article.content && article.description
-    // );
     const filteredArticles = articlesWithId.filter(
-      (article) => article.content
+      (article) => article.content && article.description
     );
+    // const filteredArticles = articlesWithId.filter(
+    //   (article) => article.content
+    // );
 
     if (isNewPage) {
       setArticles((prev) => [...prev, ...filteredArticles]);
