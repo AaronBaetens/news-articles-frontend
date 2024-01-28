@@ -8,7 +8,7 @@ const useArticlesList = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [preparingForLiveUpdate, setPreparingForLiveUpdate] = useState(false);
-  const pageSize = 10;
+  const pageSize = 13;
 
   const processArticles = (data, isNewPage = false) => {
     const articlesWithId = data.articles.map((article) => ({
