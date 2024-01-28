@@ -17,6 +17,7 @@ import { toggleFavorite, isFavorite } from "@shared/helpers/favorites.helper";
 
 const Article = ({ article, loading }) => {
   const [favorite, setFavorite] = useState(false);
+  // Destructure properties safely with optional chaining
   const { id, title, description, urlToImage, url } = article ?? {};
 
   useEffect(() => {
@@ -25,24 +26,8 @@ const Article = ({ article, loading }) => {
     }
   }, [id]);
 
-  if (loading) {
-    return (
-      <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        <Skeleton variant="rectangular" width="100%" height={140} />
-        <CardContent sx={{ flexGrow: 1, height: "350px" }}>
-          <Skeleton width="80%" />
-          <Skeleton width="60%" />
-          <Skeleton width="40%" />
-        </CardContent>
-        <CardActions sx={{ justifyContent: "flex-end", mt: "auto" }}>
-          <Skeleton width="20%" height={34} />
-        </CardActions>
-      </Card>
-    );
-  }
-
   const handleToggleFavorite = (event) => {
-    event.stopPropagation();
+    event.stopPropagation(); // Prevent the card click event
     toggleFavorite(article);
     setFavorite(isFavorite(id));
   };
@@ -51,7 +36,20 @@ const Article = ({ article, loading }) => {
     window.open(url, "_blank");
   };
 
-  return (
+  // Conditional rendering based on the loading state
+  return loading ? (
+    <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <Skeleton variant="rectangular" width="100%" height={140} />
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Skeleton width="80%" />
+        <Skeleton width="60%" />
+        <Skeleton width="40%" />
+      </CardContent>
+      <CardActions sx={{ justifyContent: "flex-end", mt: "auto" }}>
+        <Skeleton width="20%" height={34} />
+      </CardActions>
+    </Card>
+  ) : (
     <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <CardActionArea onClick={onCardClick}>
         {urlToImage && (
@@ -62,7 +60,7 @@ const Article = ({ article, loading }) => {
             alt={title}
           />
         )}
-        <CardContent sx={{ flexGrow: 1, height: "350px" }}>
+        <CardContent sx={{ flexGrow: 1 }}>
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
@@ -87,13 +85,18 @@ const Article = ({ article, loading }) => {
 
 Article.propTypes = {
   article: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    title: PropTypes.string,
     description: PropTypes.string,
     urlToImage: PropTypes.string,
-    url: PropTypes.string.isRequired,
-  }).isRequired,
+    url: PropTypes.string,
+  }),
   loading: PropTypes.bool,
+};
+
+Article.defaultProps = {
+  article: {},
+  loading: false,
 };
 
 export default Article;
