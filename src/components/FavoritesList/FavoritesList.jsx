@@ -1,14 +1,15 @@
+// Adjustments to FavoritesList component
 import { useState, useEffect } from "react";
-import { List, ListItem, ListItemText, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { getFavorites, toggleFavorite } from "@shared/helpers/favorites.helper";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DialogComponent from "@components/DialogComponent";
+import { getFavorites, toggleFavorite } from "@shared/helpers/favorites.helper";
+import FavoriteArticle from "@components/FavoriteArticle";
 
 const FavoritesList = () => {
   const [favorites, setFavorites] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0); // Add a key to trigger refresh
 
   useEffect(() => {
     setFavorites(getFavorites());
@@ -30,24 +31,36 @@ const FavoritesList = () => {
     setDialogOpen(true);
   };
 
-  const closeDialog = () => {
-    setDialogOpen(false);
-  };
+  const closeDialog = () => setDialogOpen(false);
 
   const confirmDelete = () => {
     if (articleToDelete) {
       toggleFavorite(articleToDelete);
       setFavorites(getFavorites());
+      closeDialog();
     }
-    closeDialog();
   };
+
+  const refreshFavorites = () => {
+    setFavorites(getFavorites());
+  };
+
+  const handleScoreChange = () => {
+    // Triggering re-fetch of favorites
+    setRefreshKey((prevKey) => prevKey + 1);
+    refreshFavorites();
+  };
+
+  useEffect(() => {
+    refreshFavorites();
+  }, [refreshKey]); // Depend on refreshKey to re-trigger the effect
 
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="favoritesDroppable" type="FAVORITES">
+        <Droppable droppableId="favoritesDroppable">
           {(provided) => (
-            <List {...provided.droppableProps} ref={provided.innerRef}>
+            <div {...provided.droppableProps} ref={provided.innerRef}>
               {favorites.map((article, index) => (
                 <Draggable
                   key={article.id}
@@ -55,29 +68,22 @@ const FavoritesList = () => {
                   index={index}
                 >
                   {(provided) => (
-                    <ListItem
+                    <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      secondaryAction={
-                        <IconButton
-                          edge="end"
-                          onClick={() => openDeleteDialog(article)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      }
                     >
-                      <ListItemText
-                        primary={article.title}
-                        secondary={article.description}
+                      <FavoriteArticle
+                        article={article}
+                        onRemove={openDeleteDialog}
+                        onScoreChange={handleScoreChange} // Pass this prop to each FavoriteArticle
                       />
-                    </ListItem>
+                    </div>
                   )}
                 </Draggable>
               ))}
               {provided.placeholder}
-            </List>
+            </div>
           )}
         </Droppable>
       </DragDropContext>
