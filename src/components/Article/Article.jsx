@@ -50,7 +50,18 @@ const Article = ({ article, loading }) => {
       </CardActions>
     </Card>
   ) : (
-    <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        transition: "background-color 0.3s", // Smooth transition for background color
+        "&:hover": {
+          boxShadow: 6, // Shadow effect on hover
+          backgroundColor: "rgba(245, 245, 245, 0.85)", // Light grey color on hover
+        },
+      }}
+    >
       <CardActionArea onClick={onCardClick}>
         {urlToImage && (
           <CardMedia

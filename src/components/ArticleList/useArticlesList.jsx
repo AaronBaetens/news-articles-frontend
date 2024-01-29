@@ -52,7 +52,7 @@ const useArticlesList = () => {
         await fetchArticlesByPage(1);
         setPreparingForLiveUpdate(false);
       }, 3000);
-    }, 300000);
+    }, 3000000);
 
     return () => clearInterval(interval);
   }, [fetchArticlesByPage]);
