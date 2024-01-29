@@ -4,16 +4,35 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DialogComponent from "@components/DialogComponent";
 import { getFavorites, toggleFavorite } from "@shared/helpers/favorites.helper";
 import FavoriteArticle from "@components/FavoriteArticle";
+import { Box, Button, ButtonGroup } from "@mui/material";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const FavoritesList = () => {
   const [favorites, setFavorites] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0); // Add a key to trigger refresh
+  const [sortOrder, setSortOrder] = useState(
+    localStorage.getItem("sortOrder") || "desc"
+  );
 
   useEffect(() => {
     setFavorites(getFavorites());
   }, []);
+
+  useEffect(() => {
+    const sortedFavorites = getFavorites().sort((a, b) => {
+      return sortOrder === "desc" ? b.rank - a.rank : a.rank - b.rank;
+    });
+    setFavorites(sortedFavorites);
+  }, [sortOrder]);
+
+  const toggleSort = () => {
+    const newSortOrder = sortOrder === "desc" ? "asc" : "desc";
+    setSortOrder(newSortOrder);
+    localStorage.setItem("sortOrder", newSortOrder);
+  };
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
@@ -57,6 +76,21 @@ const FavoritesList = () => {
 
   return (
     <>
+      <Box display="flex" justifyContent="flex-end" p={2}>
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+        >
+          <Button
+            onClick={toggleSort}
+            endIcon={
+              sortOrder === "asc" ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />
+            }
+          >
+            Sort by Score: {sortOrder === "asc" ? "Ascending" : "Descending"}
+          </Button>
+        </ButtonGroup>
+      </Box>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="favoritesDroppable">
           {(provided) => (
