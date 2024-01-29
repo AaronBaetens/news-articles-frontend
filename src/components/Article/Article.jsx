@@ -17,7 +17,6 @@ import { toggleFavorite, isFavorite } from "@shared/helpers/favorites.helper";
 
 const Article = ({ article, loading }) => {
   const [favorite, setFavorite] = useState(false);
-  // Destructure properties safely with optional chaining
   const { id, title, description, urlToImage, url } = article ?? {};
 
   useEffect(() => {
@@ -36,18 +35,14 @@ const Article = ({ article, loading }) => {
     window.open(url, "_blank");
   };
 
-  // Conditional rendering based on the loading state
   return loading ? (
-    <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <Card sx={{ display: "flex", flexDirection: "column", height: 380 }}>
+      {" "}
+      {/* Adjust the height to match your card's height */}
       <Skeleton variant="rectangular" width="100%" height={140} />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Skeleton width="80%" />
-        <Skeleton width="60%" />
-        <Skeleton width="40%" />
-      </CardContent>
-      <CardActions sx={{ justifyContent: "flex-end", mt: "auto" }}>
-        <Skeleton width="20%" height={34} />
-      </CardActions>
+      <Skeleton variant="text" sx={{ flexGrow: 1, m: 1 }} />
+      <Skeleton variant="text" sx={{ m: 1 }} />
+      <Skeleton variant="text" sx={{ m: 1 }} width="60%" />
     </Card>
   ) : (
     <Card
@@ -55,10 +50,10 @@ const Article = ({ article, loading }) => {
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        transition: "background-color 0.3s", // Smooth transition for background color
+        transition: "background-color 0.3s",
         "&:hover": {
-          boxShadow: 6, // Shadow effect on hover
-          backgroundColor: "rgba(245, 245, 245, 0.85)", // Light grey color on hover
+          boxShadow: 6,
+          backgroundColor: "rgba(245, 245, 245, 0.85)",
         },
       }}
     >

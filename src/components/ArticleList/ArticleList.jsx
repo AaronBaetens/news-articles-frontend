@@ -4,6 +4,7 @@ import {
   Grid,
   LinearProgress,
   Typography,
+  Paper,
 } from "@mui/material";
 import useArticlesList from "./useArticlesList";
 import { useEffect } from "react";
@@ -35,7 +36,10 @@ const ArticleList = () => {
   }, [fetchMoreArticles, articlesLoading]);
 
   return (
-    <Container maxWidth="lg" sx={{ my: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{ my: 4, backgroundColor: "rgba(247, 247, 247, 0.5)", padding: 2 }}
+    >
       {preparingForLiveUpdate && (
         <Box display="flex" justifyContent="center" alignItems="center" my={2}>
           <Box width="100%">
