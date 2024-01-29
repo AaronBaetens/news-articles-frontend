@@ -14,6 +14,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever"; // Changed fo
 import StarIcon from "@mui/icons-material/Star";
 import { grey, amber, blueGrey } from "@mui/material/colors";
 import { updateFavorite } from "@shared/helpers/favorites.helper";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew"; // Icon to indicate opening an article
 
 const StyledRating = styled(Box)(() => ({
   display: "flex",
@@ -42,6 +43,11 @@ const FavoriteArticle = ({ article, onRemove, onScoreChange }) => {
       />
     ));
 
+  const openArticle = (url, event) => {
+    event.stopPropagation(); // This prevents the drag and drop from triggering
+    window.open(url, "_blank");
+  };
+
   return (
     <Paper
       elevation={3}
@@ -55,7 +61,7 @@ const FavoriteArticle = ({ article, onRemove, onScoreChange }) => {
         borderRadius: "10px",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
         <ListItemAvatar>
           <Avatar src={article.urlToImage} variant="square" />
         </ListItemAvatar>
@@ -66,19 +72,35 @@ const FavoriteArticle = ({ article, onRemove, onScoreChange }) => {
             </Typography>
           }
           secondary={article.description}
-          sx={{ margin: "0 16px" }}
+          sx={{ margin: "0 16px", cursor: "pointer" }}
+          onClick={(event) => openArticle(article.url, event)} // Clickable title
         />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <StyledRating>{stars}</StyledRating>
+        <Tooltip title="Open Article" arrow>
+          <IconButton
+            edge="end"
+            onClick={(event) => openArticle(article.url, event)}
+            sx={{
+              color: grey[800],
+              "&:hover": {
+                color: grey[600],
+              },
+              marginRight: "8px", // Added margin to separate the open and delete actions
+            }}
+          >
+            <OpenInNewIcon />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Delete from Favorites" arrow>
           <IconButton
             edge="end"
             onClick={() => onRemove(article)}
             sx={{
-              color: grey[800], // More distinct icon color
+              color: grey[800],
               "&:hover": {
-                color: grey[600], // Hover effect for icon button
+                color: grey[600],
               },
             }}
           >
