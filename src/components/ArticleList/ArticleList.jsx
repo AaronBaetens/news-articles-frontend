@@ -8,6 +8,7 @@ import {
 import useArticlesList from "./useArticlesList";
 import { useEffect } from "react";
 import Article from "@components/Article";
+import { throttle } from "lodash";
 
 const ArticleList = () => {
   const {
@@ -19,7 +20,7 @@ const ArticleList = () => {
   } = useArticlesList();
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       const threshold = 300;
       const currentPosition = window.innerHeight + window.scrollY;
       const nearBottom =
@@ -28,14 +29,20 @@ const ArticleList = () => {
       if (nearBottom && !articlesLoading) {
         fetchMoreArticles();
       }
-    };
+    }, 200); // Throttle for 200ms
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      handleScroll.cancel(); // If using lodash's throttle, cancel the throttled function
+    };
   }, [fetchMoreArticles, articlesLoading]);
 
   return (
-    <Container maxWidth="lg" sx={{ my: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{ my: 4, backgroundColor: "rgba(247, 247, 247, 0.5)", padding: 2 }}
+    >
       {preparingForLiveUpdate && (
         <Box display="flex" justifyContent="center" alignItems="center" my={2}>
           <Box width="100%">
