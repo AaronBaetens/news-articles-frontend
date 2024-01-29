@@ -4,7 +4,6 @@ import {
   Grid,
   LinearProgress,
   Typography,
-  Paper,
 } from "@mui/material";
 import useArticlesList from "./useArticlesList";
 import { useEffect } from "react";
