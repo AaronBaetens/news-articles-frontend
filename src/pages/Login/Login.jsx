@@ -30,7 +30,7 @@ const Login = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center", // Center horizontally
+        alignItems: "center",
         backgroundImage:
           'url("https://source.unsplash.com/random/1920x1080?news")',
         backgroundRepeat: "no-repeat",
@@ -45,13 +45,13 @@ const Login = () => {
         elevation={6}
         sx={{
           p: 4,
-          width: "90%", // Adjust the width to be 90% of the parent
-          maxWidth: 400, // Also set a maximum width
+          width: "90%",
+          maxWidth: 400,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           backgroundColor: "rgba(255, 255, 255, 0.8)",
-          borderRadius: 2, // Rounded corners
+          borderRadius: 2,
         }}
       >
         <Typography component="h1" variant="h5" sx={{ mb: 3 }}>

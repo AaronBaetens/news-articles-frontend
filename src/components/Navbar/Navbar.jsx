@@ -26,22 +26,8 @@ const Navbar = ({ onLogout, loadingAuth }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
-
   const list = () => (
-    <div
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
+    <div role="presentation" onClick={() => setDrawerOpen(!drawerOpen)}>
       <List>
         <ListItem button component={Link} to="/">
           <ListItemIcon>
@@ -73,12 +59,16 @@ const Navbar = ({ onLogout, loadingAuth }) => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={toggleDrawer(true)}
+            onClick={() => setDrawerOpen(!drawerOpen)}
           >
             <MenuIcon />
           </IconButton>
         )}
-        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(!drawerOpen)}
+        >
           {list()}
         </Drawer>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -92,7 +82,7 @@ const Navbar = ({ onLogout, loadingAuth }) => {
               to="/"
               sx={{
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.08)", // Example hover effect
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
                 },
               }}
             >
@@ -104,7 +94,7 @@ const Navbar = ({ onLogout, loadingAuth }) => {
               to="/favorites"
               sx={{
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.08)", // Apply the same or different effect as needed
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
                 },
               }}
             >

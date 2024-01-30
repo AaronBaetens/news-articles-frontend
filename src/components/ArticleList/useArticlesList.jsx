@@ -43,7 +43,6 @@ const useArticlesList = () => {
   }, []);
 
   useEffect(() => {
-    // Initial fetch
     fetchArticlesByPage(1);
 
     const interval = setInterval(() => {

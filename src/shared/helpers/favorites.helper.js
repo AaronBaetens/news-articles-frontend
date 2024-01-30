@@ -1,12 +1,11 @@
-// Adjusting to store and retrieve detailed article objects.
 export const toggleFavorite = (article) => {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   const index = favorites.findIndex((fav) => fav.id === article.id);
 
   if (index !== -1) {
-    favorites.splice(index, 1); // Remove if already a favorite
+    favorites.splice(index, 1);
   } else {
-    favorites.push(article); // Add to favorites
+    favorites.push(article);
   }
 
   localStorage.setItem("favorites", JSON.stringify(favorites));
@@ -21,13 +20,12 @@ export const getFavorites = () => {
   return JSON.parse(localStorage.getItem("favorites")) || [];
 };
 
-// Optional: Function to update a favorite's details
 export const updateFavorite = (updatedArticle) => {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   const index = favorites.findIndex((fav) => fav.id === updatedArticle.id);
 
   if (index !== -1) {
-    favorites[index] = updatedArticle; // Update the article details
+    favorites[index] = updatedArticle;
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }
 };

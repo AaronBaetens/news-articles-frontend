@@ -29,12 +29,12 @@ const ArticleList = () => {
       if (nearBottom && !articlesLoading) {
         fetchMoreArticles();
       }
-    }, 200); // Throttle for 200ms
+    }, 200);
 
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      handleScroll.cancel(); // If using lodash's throttle, cancel the throttled function
+      handleScroll.cancel();
     };
   }, [fetchMoreArticles, articlesLoading]);
 

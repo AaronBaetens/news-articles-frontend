@@ -1,4 +1,3 @@
-// Adjustments to FavoritesList component
 import { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DialogComponent from "@components/DialogComponent";
@@ -12,7 +11,7 @@ const FavoritesList = () => {
   const [favorites, setFavorites] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState(null);
-  const [refreshKey, setRefreshKey] = useState(0); // Add a key to trigger refresh
+  const [refreshKey, setRefreshKey] = useState(0);
   const [sortOrder, setSortOrder] = useState(
     localStorage.getItem("sortOrder") || "desc"
   );
@@ -65,14 +64,13 @@ const FavoritesList = () => {
   };
 
   const handleScoreChange = () => {
-    // Triggering re-fetch of favorites
     setRefreshKey((prevKey) => prevKey + 1);
     refreshFavorites();
   };
 
   useEffect(() => {
     refreshFavorites();
-  }, [refreshKey]); // Depend on refreshKey to re-trigger the effect
+  }, [refreshKey]);
 
   return (
     <>
@@ -110,7 +108,7 @@ const FavoritesList = () => {
                       <FavoriteArticle
                         article={article}
                         onRemove={openDeleteDialog}
-                        onScoreChange={handleScoreChange} // Pass this prop to each FavoriteArticle
+                        onScoreChange={handleScoreChange}
                       />
                     </div>
                   )}

@@ -1,4 +1,3 @@
-// src/shared/theme.js
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -51,7 +50,6 @@ const theme = createTheme({
       fontStyle: "italic",
     },
   },
-  // Any other global overrides
 });
 
 export default theme;
