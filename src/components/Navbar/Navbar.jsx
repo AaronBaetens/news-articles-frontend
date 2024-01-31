@@ -29,19 +29,19 @@ const Navbar = ({ onLogout, loadingAuth }) => {
   const list = () => (
     <div role="presentation" onClick={() => setDrawerOpen(!drawerOpen)}>
       <List>
-        <ListItem button component={Link} to="/">
+        <ListItem component={Link} to="/">
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem button component={Link} to="/favorites">
+        <ListItem component={Link} to="/favorites">
           <ListItemIcon>
             <FavoriteIcon />
           </ListItemIcon>
           <ListItemText primary="Favorites" />
         </ListItem>
-        <ListItem button onClick={onLogout}>
+        <ListItem onClick={onLogout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
