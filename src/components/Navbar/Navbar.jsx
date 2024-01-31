@@ -26,31 +26,6 @@ const Navbar = ({ onLogout, loadingAuth }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const list = () => (
-    <div role="presentation" onClick={() => setDrawerOpen(!drawerOpen)}>
-      <List>
-        <ListItem component={Link} to="/">
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem component={Link} to="/favorites">
-          <ListItemIcon>
-            <FavoriteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Favorites" />
-        </ListItem>
-        <ListItem onClick={onLogout}>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
-      </List>
-    </div>
-  );
-
   return (
     <AppBar position="static">
       <Toolbar>
@@ -69,7 +44,28 @@ const Navbar = ({ onLogout, loadingAuth }) => {
           open={drawerOpen}
           onClose={() => setDrawerOpen(!drawerOpen)}
         >
-          {list()}
+          <div role="presentation" onClick={() => setDrawerOpen(!drawerOpen)}>
+            <List>
+              <ListItem component={Link} to="/">
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem component={Link} to="/favorites">
+                <ListItemIcon>
+                  <FavoriteIcon />
+                </ListItemIcon>
+                <ListItemText primary="Favorites" />
+              </ListItem>
+              <ListItem onClick={onLogout}>
+                <ListItemIcon>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </List>
+          </div>
         </Drawer>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           News Dashboard
@@ -82,7 +78,7 @@ const Navbar = ({ onLogout, loadingAuth }) => {
               to="/"
               sx={{
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.08)",
+                  backgroundColor: theme.palette.primary.light,
                 },
               }}
             >
@@ -94,7 +90,7 @@ const Navbar = ({ onLogout, loadingAuth }) => {
               to="/favorites"
               sx={{
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.08)",
+                  backgroundColor: theme.palette.primary.light,
                 },
               }}
             >
