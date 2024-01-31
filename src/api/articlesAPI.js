@@ -10,13 +10,9 @@ export const fetchArticles = async (page, pageSize) => {
     `${ARTICLES_API_BASE_URL}/top-headlines?country=nl&page=${page}&pageSize=${pageSize}&apiKey=${NEWS_ARTICLES_API_KEY}`
   );
 
-  // const response = await fetch(`https://fakerapi.it/api/v1/texts`);
-
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
   return await response.json();
-
-  // return await response.json().then((res) => ({ articles: res.data, ...res }));
 };

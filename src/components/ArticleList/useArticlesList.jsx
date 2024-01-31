@@ -18,9 +18,6 @@ const useArticlesList = () => {
     const filteredArticles = articlesWithId.filter(
       (article) => article.content && article.description
     );
-    // const filteredArticles = articlesWithId.filter(
-    //   (article) => article.content
-    // );
 
     if (isNewPage) {
       setArticles((prev) => [...prev, ...filteredArticles]);
