@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
 import {
   ListItemAvatar,
   Avatar,
@@ -16,12 +15,6 @@ import { grey, amber, blueGrey } from "@mui/material/colors";
 import { updateFavorite } from "@shared/helpers/favorites.helper";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
-const StyledRating = styled(Box)(() => ({
-  display: "flex",
-  alignItems: "center",
-  marginRight: "8px",
-}));
-
 const FavoriteArticle = ({ article, onRemove, onScoreChange }) => {
   const changeRating = (newRating) => {
     const updatedArticle = { ...article, rank: newRating };
@@ -34,7 +27,7 @@ const FavoriteArticle = ({ article, onRemove, onScoreChange }) => {
     .map((_, index) => (
       <StarIcon
         key={index}
-        style={{
+        sx={{
           color: article.rank > index ? amber[500] : grey[400],
           cursor: "pointer",
         }}
@@ -66,7 +59,7 @@ const FavoriteArticle = ({ article, onRemove, onScoreChange }) => {
         </ListItemAvatar>
         <ListItemText
           primary={
-            <Typography variant="subtitle1" color="primary.main">
+            <Typography variant="subtitle1" sx={{ color: "primary.main" }}>
               {article.title}
             </Typography>
           }
@@ -76,7 +69,9 @@ const FavoriteArticle = ({ article, onRemove, onScoreChange }) => {
         />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <StyledRating>{stars}</StyledRating>
+        <Box sx={{ display: "flex", alignItems: "center", marginRight: "8px" }}>
+          {stars}
+        </Box>
         <Tooltip title="Open Article" arrow>
           <IconButton
             edge="end"
