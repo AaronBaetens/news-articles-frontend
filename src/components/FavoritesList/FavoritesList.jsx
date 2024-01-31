@@ -1,49 +1,23 @@
-// Adjustments to FavoritesList component
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DialogComponent from "@components/DialogComponent";
-import { getFavorites, toggleFavorite } from "@shared/helpers/favorites.helper";
 import FavoriteArticle from "@components/FavoriteArticle";
 import { Box, Button, ButtonGroup } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import useFavoritesList from "./useFavoritesList";
 
 const FavoritesList = () => {
-  const [favorites, setFavorites] = useState([]);
+  const {
+    favorites,
+    toggleSort,
+    sortOrder,
+    handleDragEnd,
+    removeFavorite,
+    refreshFavorites,
+  } = useFavoritesList();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState(null);
-  const [refreshKey, setRefreshKey] = useState(0); // Add a key to trigger refresh
-  const [sortOrder, setSortOrder] = useState(
-    localStorage.getItem("sortOrder") || "desc"
-  );
-
-  useEffect(() => {
-    setFavorites(getFavorites());
-  }, []);
-
-  useEffect(() => {
-    const sortedFavorites = getFavorites().sort((a, b) => {
-      return sortOrder === "desc" ? b.rank - a.rank : a.rank - b.rank;
-    });
-    setFavorites(sortedFavorites);
-  }, [sortOrder]);
-
-  const toggleSort = () => {
-    const newSortOrder = sortOrder === "desc" ? "asc" : "desc";
-    setSortOrder(newSortOrder);
-    localStorage.setItem("sortOrder", newSortOrder);
-  };
-
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const items = Array.from(favorites);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setFavorites(items);
-    localStorage.setItem("favorites", JSON.stringify(items));
-  };
 
   const openDeleteDialog = (article) => {
     setArticleToDelete(article);
@@ -54,25 +28,14 @@ const FavoritesList = () => {
 
   const confirmDelete = () => {
     if (articleToDelete) {
-      toggleFavorite(articleToDelete);
-      setFavorites(getFavorites());
+      removeFavorite(articleToDelete);
       closeDialog();
     }
   };
 
-  const refreshFavorites = () => {
-    setFavorites(getFavorites());
-  };
-
   const handleScoreChange = () => {
-    // Triggering re-fetch of favorites
-    setRefreshKey((prevKey) => prevKey + 1);
     refreshFavorites();
   };
-
-  useEffect(() => {
-    refreshFavorites();
-  }, [refreshKey]); // Depend on refreshKey to re-trigger the effect
 
   return (
     <>
@@ -110,7 +73,7 @@ const FavoritesList = () => {
                       <FavoriteArticle
                         article={article}
                         onRemove={openDeleteDialog}
-                        onScoreChange={handleScoreChange} // Pass this prop to each FavoriteArticle
+                        onScoreChange={handleScoreChange}
                       />
                     </div>
                   )}

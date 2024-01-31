@@ -26,7 +26,7 @@ const Article = ({ article, loading }) => {
   }, [id]);
 
   const handleToggleFavorite = (event) => {
-    event.stopPropagation(); // Prevent the card click event
+    event.stopPropagation();
     toggleFavorite(article);
     setFavorite(isFavorite(id));
   };
@@ -37,8 +37,6 @@ const Article = ({ article, loading }) => {
 
   return loading ? (
     <Card sx={{ display: "flex", flexDirection: "column", height: 380 }}>
-      {" "}
-      {/* Adjust the height to match your card's height */}
       <Skeleton variant="rectangular" width="100%" height={140} />
       <Skeleton variant="text" sx={{ flexGrow: 1, m: 1 }} />
       <Skeleton variant="text" sx={{ m: 1 }} />

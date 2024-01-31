@@ -1,11 +1,7 @@
 import ArticleList from "@components/ArticleList";
 
 const Dashboard = () => {
-  return (
-    <>
-      <ArticleList />
-    </>
-  );
+  return <ArticleList />;
 };
 
 export default Dashboard;

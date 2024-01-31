@@ -17,7 +17,7 @@ export const useAuth = () => {
       return result;
     } catch (error) {
       setLoadingAuth(false);
-      throw error; // or handle the error as you see fit
+      throw error;
     }
   };
 

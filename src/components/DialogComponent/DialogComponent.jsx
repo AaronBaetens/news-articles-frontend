@@ -1,4 +1,4 @@
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 import {
   Dialog,
   DialogTitle,

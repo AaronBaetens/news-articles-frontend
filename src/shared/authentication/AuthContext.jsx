@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem("isLoggedIn") === "true"
   );
 
-  // Simulate an API call for login
   const handleLogin = (username, password) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -24,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // Simulate an API call for logout
   const handleLogout = () => {
     return new Promise((resolve) => {
       setTimeout(() => {

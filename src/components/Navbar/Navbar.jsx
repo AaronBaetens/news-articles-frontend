@@ -26,45 +26,6 @@ const Navbar = ({ onLogout, loadingAuth }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
-
-  const list = () => (
-    <div
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem button component={Link} to="/">
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button component={Link} to="/favorites">
-          <ListItemIcon>
-            <FavoriteIcon />
-          </ListItemIcon>
-          <ListItemText primary="Favorites" />
-        </ListItem>
-        <ListItem button onClick={onLogout}>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
-      </List>
-    </div>
-  );
-
   return (
     <AppBar position="static">
       <Toolbar>
@@ -73,13 +34,38 @@ const Navbar = ({ onLogout, loadingAuth }) => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={toggleDrawer(true)}
+            onClick={() => setDrawerOpen(!drawerOpen)}
           >
             <MenuIcon />
           </IconButton>
         )}
-        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-          {list()}
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(!drawerOpen)}
+        >
+          <div role="presentation" onClick={() => setDrawerOpen(!drawerOpen)}>
+            <List>
+              <ListItem component={Link} to="/">
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem component={Link} to="/favorites">
+                <ListItemIcon>
+                  <FavoriteIcon />
+                </ListItemIcon>
+                <ListItemText primary="Favorites" />
+              </ListItem>
+              <ListItem onClick={onLogout}>
+                <ListItemIcon>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </List>
+          </div>
         </Drawer>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           News Dashboard
@@ -92,7 +78,7 @@ const Navbar = ({ onLogout, loadingAuth }) => {
               to="/"
               sx={{
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.08)", // Example hover effect
+                  backgroundColor: theme.palette.primary.light,
                 },
               }}
             >
@@ -104,7 +90,7 @@ const Navbar = ({ onLogout, loadingAuth }) => {
               to="/favorites"
               sx={{
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.08)", // Apply the same or different effect as needed
+                  backgroundColor: theme.palette.primary.light,
                 },
               }}
             >
