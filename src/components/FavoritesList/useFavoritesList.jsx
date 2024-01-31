@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getFavorites, toggleFavorite } from "@shared/helpers/favorites.helper";
 
 const useFavoritesList = () => {
@@ -6,10 +6,6 @@ const useFavoritesList = () => {
   const [sortOrder, setSortOrder] = useState(
     localStorage.getItem("sortOrder") || "desc"
   );
-
-  useEffect(() => {
-    refreshFavorites();
-  }, [sortOrder]);
 
   const toggleSort = () => {
     const newSortOrder = sortOrder === "desc" ? "asc" : "desc";
@@ -27,17 +23,21 @@ const useFavoritesList = () => {
     localStorage.setItem("favorites", JSON.stringify(items));
   };
 
-  const refreshFavorites = () => {
-    const sortedFavorites = getFavorites().sort((a, b) => {
-      return sortOrder === "desc" ? b.rank - a.rank : a.rank - b.rank;
-    });
-    setFavorites(sortedFavorites);
-  };
-
   const removeFavorite = (article) => {
     toggleFavorite(article);
     refreshFavorites();
   };
+
+  const refreshFavorites = useCallback(() => {
+    const sortedFavorites = getFavorites().sort((a, b) => {
+      return sortOrder === "desc" ? b.rank - a.rank : a.rank - b.rank;
+    });
+    setFavorites(sortedFavorites);
+  }, [sortOrder]);
+
+  useEffect(() => {
+    refreshFavorites();
+  }, [sortOrder, refreshFavorites]);
 
   return {
     favorites,
